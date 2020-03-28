@@ -1,8 +1,9 @@
 package ar.com.playmedia;
 
 
-import ar.com.playmedia.model.Contact;
-// import ar.com.playmedia.controller.Contact;
+// import ar.com.playmedia.model.Contact;
+
+import ar.com.playmedia.view.Contact;
 
 public class App {
     public static void main(String[] args) {
@@ -58,19 +59,18 @@ public class App {
 		// 	System.out.println(e);
 		// }
 
-		ar.com.playmedia.model.Contact contact = new Contact (
-			25969243, 
-			"German", 
-			"Basisty", 
-			"1523924347", 
-			"german@gmail.com"
-		);
+		// ar.com.playmedia.model.Contact contact = new Contact (
+		// 	25969243, 
+		// 	"German", 
+		// 	"Basisty", 
+		// 	"1523924347", 
+		// 	"german@gmail.com"
+		// );
 		
-		ar.com.playmedia.controller.Contact handler = new ar.com.playmedia.controller.Contact();
+		// ar.com.playmedia.controller.Contact handler = new ar.com.playmedia.controller.Contact();
 
-		handler.connect();
-		handler.insert(contact);
-		handler.disconnect();
+		Contact contactInterface = new Contact();
+		contactInterface.mainMenu();
 	}
 }
 

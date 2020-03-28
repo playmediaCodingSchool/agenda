@@ -18,7 +18,7 @@ public class Contact {
 	public Contact() {
 		url = "jdbc:postgresql://127.0.0.1:5432/address_book";
 		username = "dba";
-		password = "12345678";
+		password = "Fsgbue13.";
 	}
 
 	public void connect() {	

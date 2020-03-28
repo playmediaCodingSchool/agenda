@@ -7,6 +7,8 @@ public class Contact {
 	private String phone;
 	private String email;
 
+	public Contact() {}
+	
 	public Contact (
 		Integer dni,
 		String name,
