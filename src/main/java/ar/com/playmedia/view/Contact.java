@@ -27,7 +27,8 @@ public class Contact {
 			System.out.println("==========");
 			System.out.println("	1) Agregar contacto");
 			System.out.println("	2) Eliminar contacto");
-			System.out.println("	3) Listar contactos");
+			System.out.println("	3) Modificar contacto");
+			System.out.println("	4) Listar contactos");
 			System.out.println();
 			System.out.println("	0) Salir");
 			System.out.println();
@@ -45,6 +46,10 @@ public class Contact {
 					break;
 
 				case 3:
+					updateContact();
+					break;
+
+				case 4:
 					searchContacts();
 					break;
 
@@ -139,17 +144,102 @@ public class Contact {
 		System.out.println("======= == ==========");
 		System.out.println();
 
-		for(ar.com.playmedia.model.Contact contact : contactList) {
-			System.out.println(String.format("DNI: %s", contact.getDni()));
-			System.out.println(String.format("Nombre: %s", contact.getName()));
-			System.out.println(String.format("Apellido: %s", contact.getSurname()));
-			System.out.println(String.format("Telefono: %s", contact.getPhone()));
-			System.out.println(String.format("Correo Electronico: %s", contact.getEmail()));
-			System.out.println();
-		}
+		for(ar.com.playmedia.model.Contact contact : contactList) 
+			printContact(contact);
 
 		System.out.println();
 		System.out.print("Presione ENTER para continuar...");
 		keyboard.nextLine();
+	}
+
+
+	public void printContact(ar.com.playmedia.model.Contact contact) {
+		System.out.println(String.format("DNI: %s", contact.getDni()));
+		System.out.println(String.format("Nombre: %s", contact.getName()));
+		System.out.println(String.format("Apellido: %s", contact.getSurname()));
+		System.out.println(String.format("Telefono: %s", contact.getPhone()));
+		System.out.println(String.format("Correo Electronico: %s", contact.getEmail()));
+		System.out.println();
+	}
+
+	public void updateContact() {
+		Integer identificationOK = 0;
+
+		ar.com.playmedia.model.Contact contact = null;
+
+		while(identificationOK != 1) {
+			clearScreen();
+			System.out.println("Modificacion de Contactos:");
+			System.out.println("============ == ==========");
+			System.out.println();
+			System.out.print("	Ingrese DNI del contacto: ");
+			Integer dni = Integer.parseInt(keyboard.nextLine());
+
+			handler.connect();
+			contact = handler.identify(dni);
+			handler.disconnect();
+
+			System.out.println();
+			printContact(contact);
+
+			System.out.print("Es este el contacto deseado? (0 NO / 1 SI): ");
+			identificationOK = Integer.parseInt(keyboard.nextLine());
+		}
+
+		Integer option = -1;
+
+		while(option != 0) {
+			clearScreen();
+			System.out.println("Modificando Contacto:");
+			System.out.println("=========== =========");
+			System.out.println();
+			printContact(contact);
+			System.out.println();
+			System.out.println("	1) Modificar DNI");
+			System.out.println("	2) Modificar Nombre");
+			System.out.println("	3) Modificar Apellido");
+			System.out.println("	4) Modificar Telefono");
+			System.out.println("	5) Modificar Correo Electronico");
+			System.out.println();
+			System.out.println("	0) Salir");
+			System.out.println();
+			System.out.print("Elija dato a modificar: ");
+			option = Integer.parseInt(keyboard.nextLine());
+
+			if(option == 0)
+				break;
+
+			System.out.print("Nuevo valor: ");
+			String newValue = keyboard.nextLine();
+
+			handler.connect();
+
+			switch(option) {
+				case 1:
+					contact = handler.setDni(contact, Integer.parseInt(newValue));
+					break;
+
+				case 2:
+					contact = handler.setName(contact, newValue);
+					break;
+
+				case 3:
+					contact = handler.setSurname(contact, newValue);
+					break;
+
+				case 4:
+					contact = handler.setPhone(contact, newValue);
+					break;
+
+				case 5:
+					contact = handler.setEmail(contact, newValue);
+					break;
+
+				default:
+					System.out.println("Opcion incorrecta! Presione ENTER para continuar...");
+			}
+
+			handler.disconnect();
+		}
 	}
 }

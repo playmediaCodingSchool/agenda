@@ -18,7 +18,7 @@ public class Contact {
 	public Contact() {
 		url = "jdbc:postgresql://127.0.0.1:5432/address_book";
 		username = "dba";
-		password = "Fsgbue13.";
+		password = "12345678";
 	}
 
 	public void connect() {	
@@ -138,23 +138,140 @@ public class Contact {
 	}
 		
 		
+	public ar.com.playmedia.model.Contact identify(Integer dni) {
+		ar.com.playmedia.model.Contact contact = null;
 
-		
-		
-		// // CONSULTA DE DATOS
-		// queryString = "SELECT * FROM persona";
-		
-		
-		// try {
-		// 	query = dbConnection.createStatement();
-		// 	result = query.executeQuery(queryString);
-			
-		// 	while(result.next()) {
-		// 		System.out.println(result.getString(1) + " | " + result.getString(2));
-		// 	}
-			
-		// 	query.close();
-		// } catch (Exception e) {
-		// 	System.out.println("ERROR: " + e);
-		// }
+		String queryString = String.format("SELECT * FROM contact_identify(%s)", dni);
+
+		try {
+			query = dbConnection.createStatement();
+			result = query.executeQuery(queryString);
+
+			while(result.next()) {
+				contact = new ar.com.playmedia.model.Contact (
+					 Integer.parseInt(result.getString(1)),
+					 result.getString(2),
+					 result.getString(3),
+					 result.getString(4),
+					 result.getString(5)
+				);
+			}
+
+			query.close();
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+
+		return contact;
+	}
+
+
+	public ar.com.playmedia.model.Contact setDni (
+		ar.com.playmedia.model.Contact contact, 
+		Integer dni
+	) {
+		String queryString = String.format (
+			"SELECT * FROM contact_set_dni(%s, %s)", 
+			contact.getDni(),
+			dni
+		);
+
+		try {
+			query = dbConnection.createStatement();
+			query.execute(queryString);
+			query.close();
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+
+		return identify(dni);
+	}
+
+
+	public ar.com.playmedia.model.Contact setName (
+		ar.com.playmedia.model.Contact contact, 
+		String name
+	) {
+		String queryString = String.format (
+			"SELECT * FROM contact_set_name(%s, '%s')", 
+			contact.getDni(),
+			name
+		);
+
+		try {
+			query = dbConnection.createStatement();
+			query.execute(queryString);
+			query.close();
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+
+		return identify(contact.getDni());
+	}
+
+
+	public ar.com.playmedia.model.Contact setSurname (
+		ar.com.playmedia.model.Contact contact, 
+		String surname
+	) {
+		String queryString = String.format (
+			"SELECT * FROM contact_set_surname(%s, '%s')", 
+			contact.getDni(),
+			surname
+		);
+
+		try {
+			query = dbConnection.createStatement();
+			query.execute(queryString);
+			query.close();
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+
+		return identify(contact.getDni());
+	}
+
+
+	public ar.com.playmedia.model.Contact setPhone (
+		ar.com.playmedia.model.Contact contact, 
+		String phone
+	) {
+		String queryString = String.format (
+			"SELECT * FROM contact_set_phone(%s, '%s')", 
+			contact.getDni(),
+			phone
+		);
+
+		try {
+			query = dbConnection.createStatement();
+			query.execute(queryString);
+			query.close();
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+
+		return identify(contact.getDni());
+	}
+
+
+	public ar.com.playmedia.model.Contact setEmail (
+		ar.com.playmedia.model.Contact contact, 
+		String name
+	) {
+		String queryString = String.format (
+			"SELECT * FROM contact_set_email(%s, '%s')", 
+			contact.getDni(),
+			name
+		);
+
+		try {
+			query = dbConnection.createStatement();
+			query.execute(queryString);
+			query.close();
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+
+		return identify(contact.getDni());
+	}
 }
