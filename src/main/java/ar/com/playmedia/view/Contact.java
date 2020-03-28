@@ -23,6 +23,7 @@ public class Contact {
 			System.out.println("Contactos:");
 			System.out.println("==========");
 			System.out.println("	1) Agregar contacto");
+			System.out.println("	2) Eliminar contacto");
 			System.out.println();
 			System.out.println("	0) Salir");
 			System.out.println();
@@ -33,6 +34,10 @@ public class Contact {
 			switch(option) {
 				case 1:
 					addContact();
+					break;
+
+				case 2:
+					deleteContact();
 					break;
 
 				case 0:
@@ -77,6 +82,30 @@ public class Contact {
 
 			System.out.println();
 			System.out.print("Agregar otro contacto? (0 no / 1 si): ");
+			other = Integer.parseInt(keyboard.nextLine());
+		}
+	}
+
+
+	public void deleteContact() {
+		ar.com.playmedia.controller.Contact handler = new ar.com.playmedia.controller.Contact();
+
+		Integer other = -1;
+
+		while(other != 0) {
+			clearScreen();
+			System.out.println("Baja de Contacto:");
+			System.out.println("==== == =========");
+			System.out.println();
+			System.out.print("	Ingrese DNI: ");
+			Integer dni = Integer.parseInt(keyboard.nextLine());
+
+			handler.connect();
+			handler.delete(dni);
+			handler.disconnect();
+
+			System.out.println();
+			System.out.print("Eliminar otro contacto? (0 no / 1 si): ");
 			other = Integer.parseInt(keyboard.nextLine());
 		}
 	}

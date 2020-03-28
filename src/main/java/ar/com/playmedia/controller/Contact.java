@@ -5,8 +5,6 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.ResultSet;
 
-// import ar.com.playmedia.model.Contact;
-
 public class Contact {
 	private Connection dbConnection;
 	private Statement query;
@@ -40,7 +38,7 @@ public class Contact {
 	}
 
 
-	public void insert (ar.com.playmedia.model.Contact contact) {
+	public void insert(ar.com.playmedia.model.Contact contact) {
 		String queryString = String.format (
 			"INSERT INTO contact(dni, name, surname, phone, email) VALUES(%s, '%s', '%s', '%s', '%s')",
 			contact.getDni(),
@@ -48,6 +46,22 @@ public class Contact {
 			contact.getSurname(),
 			contact.getPhone(),
 			contact.getEmail()
+		);
+
+		try {
+			query = dbConnection.createStatement();
+			query.execute(queryString);
+			query.close();
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+	}
+
+
+	public void delete(Integer dni) {
+		String queryString = String.format (
+			"SELECT  contact_destroy(%s);",
+			dni
 		);
 
 		try {
