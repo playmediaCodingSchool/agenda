@@ -1,5 +1,7 @@
 package ar.com.playmedia.controller;
 
+import java.util.ArrayList;
+
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -72,7 +74,68 @@ public class Contact {
 			System.out.println("ERROR: " + e);
 		}
 	}
+	
+
+	public ArrayList<ar.com.playmedia.model.Contact> search() {
+		ArrayList<ar.com.playmedia.model.Contact> contactList = 
+			new ArrayList<ar.com.playmedia.model.Contact>();
 		
+		String queryString = "SELECT * from contact_search()";
+
+		try {
+			query = dbConnection.createStatement();
+			result = query.executeQuery(queryString);
+
+			while(result.next()) {
+				ar.com.playmedia.model.Contact contact = new ar.com.playmedia.model.Contact (
+					 Integer.parseInt(result.getString(1)),
+					 result.getString(2),
+					 result.getString(3),
+					 result.getString(4),
+					 result.getString(5)
+				);
+
+				contactList.add(contact);
+			}
+
+			query.close();
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+
+		return contactList;
+	}
+
+
+	public ArrayList<ar.com.playmedia.model.Contact> search(String filter) {
+		ArrayList<ar.com.playmedia.model.Contact> contactList = 
+			new ArrayList<ar.com.playmedia.model.Contact>();
+		
+		String queryString = String.format("SELECT * from contact_search('%s')", filter);
+
+		try {
+			query = dbConnection.createStatement();
+			result = query.executeQuery(queryString);
+
+			while(result.next()) {
+				ar.com.playmedia.model.Contact contact = new ar.com.playmedia.model.Contact (
+					 Integer.parseInt(result.getString(1)),
+					 result.getString(2),
+					 result.getString(3),
+					 result.getString(4),
+					 result.getString(5)
+				);
+
+				contactList.add(contact);
+			}
+
+			query.close();
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
+
+		return contactList;
+	}
 		
 		
 

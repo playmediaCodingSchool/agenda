@@ -1,12 +1,15 @@
 package ar.com.playmedia.view;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Contact {
 	private Scanner keyboard;
-	
+	private ar.com.playmedia.controller.Contact handler;
+
 	public Contact() {
 		keyboard = new Scanner(System.in);
+		handler = new ar.com.playmedia.controller.Contact();
 	}
 
 	public static void clearScreen() {
@@ -24,6 +27,7 @@ public class Contact {
 			System.out.println("==========");
 			System.out.println("	1) Agregar contacto");
 			System.out.println("	2) Eliminar contacto");
+			System.out.println("	3) Listar contactos");
 			System.out.println();
 			System.out.println("	0) Salir");
 			System.out.println();
@@ -40,6 +44,10 @@ public class Contact {
 					deleteContact();
 					break;
 
+				case 3:
+					searchContacts();
+					break;
+
 				case 0:
 					break;
 
@@ -52,7 +60,6 @@ public class Contact {
 
 	public void addContact() {
 		ar.com.playmedia.model.Contact contact = new ar.com.playmedia.model.Contact();
-		ar.com.playmedia.controller.Contact handler = new ar.com.playmedia.controller.Contact();
 
 		Integer other = -1;
 
@@ -88,8 +95,6 @@ public class Contact {
 
 
 	public void deleteContact() {
-		ar.com.playmedia.controller.Contact handler = new ar.com.playmedia.controller.Contact();
-
 		Integer other = -1;
 
 		while(other != 0) {
@@ -108,5 +113,43 @@ public class Contact {
 			System.out.print("Eliminar otro contacto? (0 no / 1 si): ");
 			other = Integer.parseInt(keyboard.nextLine());
 		}
+	}
+
+
+	public void searchContacts() {
+		clearScreen();
+		System.out.println("Listado de Contactos:");
+		System.out.println("======= == ==========");
+		System.out.println();
+		System.out.print("	Ingrese parte del apellido del contacto: ");
+		String filter = keyboard.nextLine();
+
+		ArrayList<ar.com.playmedia.model.Contact> contactList;
+		handler.connect();
+
+		if(filter.isEmpty())
+			contactList = handler.search();
+		else
+			contactList = handler.search(filter);
+		
+		handler.disconnect();
+
+		clearScreen();
+		System.out.println("Listado de Contactos:");
+		System.out.println("======= == ==========");
+		System.out.println();
+
+		for(ar.com.playmedia.model.Contact contact : contactList) {
+			System.out.println(String.format("DNI: %s", contact.getDni()));
+			System.out.println(String.format("Nombre: %s", contact.getName()));
+			System.out.println(String.format("Apellido: %s", contact.getSurname()));
+			System.out.println(String.format("Telefono: %s", contact.getPhone()));
+			System.out.println(String.format("Correo Electronico: %s", contact.getEmail()));
+			System.out.println();
+		}
+
+		System.out.println();
+		System.out.print("Presione ENTER para continuar...");
+		keyboard.nextLine();
 	}
 }
