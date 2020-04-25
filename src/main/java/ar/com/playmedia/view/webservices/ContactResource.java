@@ -26,9 +26,11 @@ public class ContactResource {
 		@QueryParam("surname") @DefaultValue("%") String surname
 	) {
 		ArrayList<ar.com.playmedia.model.Contact> contactList;
+
 		handler.connect();
 		contactList = handler.search(surname);
 		handler.disconnect();
+		
 		JSONArray contacts = new JSONArray();
 
 		for(ar.com.playmedia.model.Contact contactIterator : contactList) {
