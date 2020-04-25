@@ -22,7 +22,7 @@ public class ContactResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response search(
+	public Response search (
 		@QueryParam("surname") @DefaultValue("%") String surname
 	) {
 		ArrayList<ar.com.playmedia.model.Contact> contactList;
