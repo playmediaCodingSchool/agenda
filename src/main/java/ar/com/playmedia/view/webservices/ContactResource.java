@@ -1,8 +1,12 @@
 package ar.com.playmedia.view.webservices;
 
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -18,10 +22,12 @@ public class ContactResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response search() {
+	public Response search(
+		@QueryParam("surname") @DefaultValue("%") String surname
+	) {
 		ArrayList<ar.com.playmedia.model.Contact> contactList;
 		handler.connect();
-		contactList = handler.search();
+		contactList = handler.search(surname);
 		handler.disconnect();
 		JSONArray contacts = new JSONArray();
 
@@ -41,4 +47,27 @@ public class ContactResource {
 	}
 
 
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response create (
+		@FormParam("dni") Integer dni,
+		@FormParam("name") String name,
+		@FormParam("surname") String surname,
+		@FormParam("phone") String phone,
+		@FormParam("email") String email
+	) {
+		ar.com.playmedia.model.Contact contact = new ar.com.playmedia.model.Contact (
+			dni,
+			name,
+			surname,
+			phone,
+			email
+		);
+
+		handler.connect();
+		handler.insert(contact);
+		handler.disconnect();
+
+		return Response.status(Status.OK).build();
+	}
 }
