@@ -1,5 +1,5 @@
 $(document).ready(function() {
-	$.getJSON( "api/contact", function(contacts) {
+	$.getJSON("api/contact", function(contacts) {
 		for(let i = 0; i < contacts.length; i++) {
 			const contact = contacts[i];
 
