@@ -1,5 +1,6 @@
 package ar.com.playmedia.view.webservices;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -51,6 +52,28 @@ public class ContactResource {
 	}
 
 
+	@GET
+	@Path("{dni}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response identify (
+		@PathParam("dni") Integer dni
+	) {
+		handler.connect();
+		ar.com.playmedia.model.Contact response = handler.identify(dni);
+		handler.disconnect();
+		
+		JSONObject contact = new JSONObject();
+
+		contact.put("dni", response.getDni());
+		contact.put("name", response.getName());
+		contact.put("surname", response.getSurname());
+		contact.put("phone", response.getPhone());
+		contact.put("email", response.getEmail());
+
+		return Response.status(Status.OK).entity(contact.toString()).build();
+	}
+
+
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response create (
@@ -77,17 +100,99 @@ public class ContactResource {
 
 
 	@PATCH
+	@Path("{dni}/name/{name}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setName (
+		@PathParam("dni") Integer dni,
+		@PathParam("name") String name
+	) {
+		try {
+			handler.connect();
+			ar.com.playmedia.model.Contact contact = handler.identify(dni);
+			handler.setName(contact, name);
+			handler.disconnect();
+
+			return Response.status(Status.OK).build();
+		} catch(Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+
+	@PATCH
+	@Path("{dni}/surname/{surname}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setSurnamee (
+		@PathParam("dni") Integer dni,
+		@PathParam("surname") String surname
+	) {
+		try {
+			handler.connect();
+			ar.com.playmedia.model.Contact contact = handler.identify(dni);
+			handler.setSurname(contact, surname);
+			handler.disconnect();
+
+			return Response.status(Status.OK).build();
+		} catch(Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+
+	@PATCH
 	@Path("{dni}/phone/{phone}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response setPhone (
 		@PathParam("dni") Integer dni,
 		@PathParam("phone") String phone
 	) {
-		handler.connect();
-		ar.com.playmedia.model.Contact contact = handler.identify(dni);
-		handler.setPhone(contact, phone);
-		handler.disconnect();
+		try {
+			handler.connect();
+			ar.com.playmedia.model.Contact contact = handler.identify(dni);
+			handler.setPhone(contact, phone);
+			handler.disconnect();
 
-		return Response.status(Status.OK).build();
+			return Response.status(Status.OK).build();
+		} catch(Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+
+	@PATCH
+	@Path("{dni}/email/{email}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setEmail (
+		@PathParam("dni") Integer dni,
+		@PathParam("email") String email
+	) {
+		try {
+			handler.connect();
+			ar.com.playmedia.model.Contact contact = handler.identify(dni);
+			handler.setEmail(contact, email);
+			handler.disconnect();
+
+			return Response.status(Status.OK).build();
+		} catch(Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+
+	@DELETE
+	@Path("{dni}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response delete (
+		@PathParam("dni") Integer dni
+	) {
+		try {
+			handler.connect();
+			handler.delete(dni);
+			handler.disconnect();
+
+			return Response.status(Status.OK).build();
+		} catch(Exception e) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+		}
 	}
 }

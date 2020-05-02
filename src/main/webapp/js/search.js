@@ -1,5 +1,8 @@
-$(document).ready(function() {
-	$.getJSON("api/contact", function(contacts) {
+function search(surname) {
+	$('#result').find('tbody').detach();
+	$('#result').append($('<tbody>')); 
+
+	$.getJSON(`api/contact?surname=${surname}`, function(contacts) {
 		for(let i = 0; i < contacts.length; i++) {
 			const contact = contacts[i];
 
@@ -13,7 +16,23 @@ $(document).ready(function() {
 				</tr>
 			`;
 
-			$('#result > tbody:last-child').append(newRow);
+			$(`#result > tbody:last-child`).append(newRow);
 		}
 	});
+}
+
+$(document).ready(function() {
+	$(`#surnameCleanButton`).click(function() {
+		$(`#surname`).val(``);
+
+		search(``);
+	});
+
+	$(`#surnameButton`).click(function() {
+		let surname = $(`#surname`).val();
+
+		search(surname);
+	});
+
+	search(``);
 });
