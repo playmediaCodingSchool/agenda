@@ -3,8 +3,10 @@ package ar.com.playmedia.view.webservices;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -68,6 +70,22 @@ public class ContactResource {
 
 		handler.connect();
 		handler.insert(contact);
+		handler.disconnect();
+
+		return Response.status(Status.OK).build();
+	}
+
+
+	@PATCH
+	@Path("{dni}/phone/{phone}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response setPhone (
+		@PathParam("dni") Integer dni,
+		@PathParam("phone") String phone
+	) {
+		handler.connect();
+		ar.com.playmedia.model.Contact contact = handler.identify(dni);
+		handler.setPhone(contact, phone);
 		handler.disconnect();
 
 		return Response.status(Status.OK).build();
